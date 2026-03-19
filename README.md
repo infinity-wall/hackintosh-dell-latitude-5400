@@ -37,7 +37,7 @@ This is a **copy-paste guide** — just copy the EFI folder to your USB drive an
 | GPU (acceleration) | ✅ Working |
 | Audio | ✅ Working |
 | Wi-Fi | ✅ Working (via HeliPort) |
-| Bluetooth | ⚠️ To be verified |
+| Bluetooth | ✅ Working |
 | Trackpad | ✅ Working |
 | Keyboard | ✅ Working |
 | Screen Brightness | ✅ Working |
