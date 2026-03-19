@@ -1,83 +1,83 @@
 # 🍎 Hackintosh — Dell Latitude 5400
 
-> macOS Monterey 12.7.6 rodando em hardware Dell com OpenCore.  
-> Guia prático e direto ao ponto, baseado em experiência real.
+> macOS Monterey 12.7.6 running on Dell hardware with OpenCore.  
+> Practical, straight-to-the-point guide based on real experience.
 
-## 📦 O que tem aqui
+## 📦 What's in here
 
-Este repositório contém uma **EFI completa e funcional** para o Dell Latitude 5400 com as configurações descritas abaixo.
+This repository contains a **complete, working EFI** for the Dell Latitude 5400 with the specs listed below.
 
-É um guia no estilo **Ctrl+C / Ctrl+V** — ou seja, basta copiar a EFI para o pendrive e seguir os passos. Sem precisar montar do zero, sem precisar configurar kexts manualmente. Funcionou aqui, deve funcionar igual no seu.
+This is a **copy-paste guide** — just copy the EFI folder to your USB drive and follow the steps. No need to build from scratch or configure kexts manually. It worked here, it should work for you too.
 
-> ⚠️ **Usando outro modelo de Latitude?**  
-> Não saia copiando sem verificar! Outros modelos podem ter hardware diferente — chipset de Wi-Fi, touchpad, áudio, etc. Nesse caso, **revise o `config.plist`** (especialmente o SMBIOS e as DeviceProperties) e **confira se os kexts batem com o seu hardware** antes de usar.
+> ⚠️ **Using a different Latitude model?**  
+> Don't just copy without checking! Other models may have different hardware — Wi-Fi chipset, touchpad, audio, etc. In that case, **review the `config.plist`** (especially SMBIOS and DeviceProperties) and **make sure the kexts match your hardware** before using.
 
 ---
 
-## 💻 Especificações do Hardware
+## 💻 Hardware Specs
 
-| Componente | Detalhe |
+| Component | Details |
 |---|---|
-| **Modelo** | Dell Latitude 5400 |
+| **Model** | Dell Latitude 5400 |
 | **CPU** | Intel Core i5-8265U (Whiskey Lake) |
 | **GPU** | Intel UHD Graphics 620 |
 | **Wi-Fi** | Intel Wireless-AC 9560 |
 | **Bluetooth** | Intel Bluetooth |
-| **Armazenamento** | SSD SATA/NVMe |
+| **Storage** | SATA/NVMe SSD |
 | **Touchpad** | Alps HID |
 
 ---
 
-## ✅ Status de Compatibilidade
+## ✅ Compatibility Status
 
-| Função | Status |
+| Feature | Status |
 |---|---|
-| Boot | ✅ Funcional |
-| CPU (Power Management) | ✅ Funcional |
-| GPU (aceleração) | ✅ Funcional |
-| Áudio | ✅ Funcional |
-| Wi-Fi | ✅ Funcional (via HeliPort) |
-| Bluetooth | ⚠️ A verificar |
-| Trackpad | ✅ Funcional |
-| Teclado | ✅ Funcional |
-| Brilho da tela | ✅ Funcional |
-| Leitor de cartão SD | ✅ Funcional |
-| USB | ✅ Funcional |
-| Sleep/Wake | ⚠️ Parcial |
-| iMessage / FaceTime | ⚠️ Requer configuração de SMBIOS |
+| Boot | ✅ Working |
+| CPU (Power Management) | ✅ Working |
+| GPU (acceleration) | ✅ Working |
+| Audio | ✅ Working |
+| Wi-Fi | ✅ Working (via HeliPort) |
+| Bluetooth | ⚠️ To be verified |
+| Trackpad | ✅ Working |
+| Keyboard | ✅ Working |
+| Screen Brightness | ✅ Working |
+| SD Card Reader | ✅ Working |
+| USB | ✅ Working |
+| Sleep/Wake | ⚠️ Partial |
+| iMessage / FaceTime | ⚠️ Requires SMBIOS configuration |
 
 ---
 
-## 📋 Pré-requisitos
+## 📋 Requirements
 
-- Pendrive de **16GB ou mais**
-- Acesso a um computador com **Windows ou Linux** para preparar o pendrive
-- Conexão com a internet durante a instalação
-- **OpenCore** (versão utilizada: 1.0.x)
-
----
-
-## 🚀 Guia de Instalação
-
-### 1. Preparar o Pendrive
-
-Formate o pendrive com as seguintes configurações:
-
-- **Esquema de partição:** GPT
-- **Formato:** FAT32
-- **Nome:** qualquer (ex: `OPENCORE`)
-
-> ⚠️ O pendrive **deve** ser formatado como **UEFI + GPT**. Partições MBR ou Legacy não funcionarão.
+- USB drive of **16GB or more**
+- A computer with **Windows or Linux** to prepare the USB
+- Internet connection during installation
+- **OpenCore** (version used: 1.0.x)
 
 ---
 
-### 2. Estrutura do Pendrive
+## 🚀 Installation Guide
 
-Após preparar, o pendrive deve conter **duas pastas** na raiz:
+### 1. Prepare the USB Drive
+
+Format the USB drive with the following settings:
+
+- **Partition scheme:** GPT
+- **Format:** FAT32
+- **Name:** anything (e.g. `OPENCORE`)
+
+> ⚠️ The USB drive **must** be formatted as **UEFI + GPT**. MBR or Legacy partitions will not work.
+
+---
+
+### 2. USB Drive Structure
+
+After formatting, the USB drive must contain **two folders** at the root:
 
 ```
-PENDRIVE/
-├── EFI/
+USB/
+├── EFI/                          ← available in this repo, just copy it
 │   ├── BOOT/
 │   │   └── BOOTx64.efi
 │   └── OC/
@@ -88,108 +88,115 @@ PENDRIVE/
 │       ├── Kexts/
 │       ├── Resources/
 │       └── Tools/
-└── com.apple.recovery.boot/
+└── com.apple.recovery.boot/      ← generated with the command below
     ├── BaseSystem.dmg
     └── BaseSystem.chunklist
 ```
 
-**Para baixar o Recovery do macOS Monterey**, use o `macrecovery.py` incluso no OpenCore:
+> 📁 **The EFI folder** is ready in this repository — just download and copy it to the USB drive.
+
+> 📥 **The `com.apple.recovery.boot` folder** is not included here because the main file is over 600MB, above GitHub's limit. You need to generate it with the command below — it will be created automatically:
 
 ```bash
-# Dentro da pasta Utilities/macrecovery do OpenCore:
+# Download OpenCore at: https://github.com/acidanthera/OpenCorePkg/releases
+# Extract it and navigate to: Utilities/macrecovery/
+# Open a terminal in that folder and run:
+
 python macrecovery.py -b Mac-E43C1C25D4880AD6 -m 00000000000000000 download
 ```
 
+After the download, copy the generated `com.apple.recovery.boot` folder to the root of the USB drive.
+
 ---
 
-### 3. Kexts Utilizados
+### 3. Kexts Used
 
-| Kext | Função |
+| Kext | Purpose |
 |---|---|
-| `Lilu.kext` | Base obrigatória |
-| `VirtualSMC.kext` | Emulação de SMC |
-| `WhateverGreen.kext` | Correções de GPU |
-| `AppleALC.kext` | Áudio |
-| `IntelMausi.kext` | Ethernet Intel |
-| `RestrictEvents.kext` | Correções diversas |
-| `AirportItlwm.kext` | Wi-Fi Intel (alternativa ao itlwm) |
-| `itlwm.kext` | Wi-Fi Intel (recomendado — mais estável) |
-| `IntelBluetoothFirmware.kext` | Bluetooth Intel |
-| `BlueToolFixup.kext` | Correção Bluetooth |
-| `VoodooPS2Controller.kext` | Teclado e trackpad |
-| `VoodooI2C.kext` + `VoodooI2CHID.kext` | Touchpad avançado |
-| `SMCBatteryManager.kext` | Status da bateria |
-| `SMCDellSensors.kext` | Sensores Dell |
-| `NVMeFix.kext` | Correção NVMe |
-| `USBMap.kext` | Mapeamento USB customizado |
+| `Lilu.kext` | Required base |
+| `VirtualSMC.kext` | SMC emulation |
+| `WhateverGreen.kext` | GPU fixes |
+| `AppleALC.kext` | Audio |
+| `IntelMausi.kext` | Intel Ethernet |
+| `RestrictEvents.kext` | Misc fixes |
+| `AirportItlwm.kext` | Intel Wi-Fi (alternative to itlwm) |
+| `itlwm.kext` | Intel Wi-Fi (recommended — more stable) |
+| `IntelBluetoothFirmware.kext` | Intel Bluetooth |
+| `BlueToolFixup.kext` | Bluetooth fix |
+| `VoodooPS2Controller.kext` | Keyboard and trackpad |
+| `VoodooI2C.kext` + `VoodooI2CHID.kext` | Advanced touchpad |
+| `SMCBatteryManager.kext` | Battery status |
+| `SMCDellSensors.kext` | Dell sensors |
+| `NVMeFix.kext` | NVMe fix |
+| `USBMap.kext` | Custom USB mapping |
 
 ---
 
-### 4. Configurações da BIOS
+### 4. BIOS Settings
 
-Acesse a BIOS do Latitude 5400 pressionando **F2** na inicialização.
+Access the BIOS on the Latitude 5400 by pressing **F2** at startup.
 
-**Desativar:**
+**Disable:**
 - Secure Boot
 - Fast Boot
 - VT-d
 
-**Ativar:**
+**Enable:**
 - UEFI Boot
 - XHCI Hand-off
 - SATA Mode: **AHCI**
 
-> ⚠️ Se o Windows foi instalado com SATA em modo **RAID/RST**, é necessário migrar para AHCI via registro antes de mudar a BIOS, caso contrário o Windows não iniciará.
+> ⚠️ If Windows was installed with SATA in **RAID/RST** mode, you need to migrate to AHCI via Windows Registry before changing the BIOS, otherwise Windows will not boot.
 
 ---
 
-### 5. Boot pelo Pendrive
+### 5. Booting from USB
 
-1. Reinicie o notebook
-2. Pressione **F12** para abrir o menu de boot
-3. Selecione o pendrive em modo **UEFI**
-4. No menu do OpenCore, selecione o Recovery do macOS
-5. Siga o instalador normalmente
+1. Restart the notebook
+2. Press **F12** to open the boot menu
+3. Select the USB drive in **UEFI** mode
+4. In the OpenCore menu, select the macOS Recovery
+5. Follow the installer normally
 
 ---
 
-### 6. Instalação no SSD
+### 6. Installing to SSD
 
-Durante a instalação, formate o SSD pelo **Utilitário de Disco**:
-- **Formato:** APFS
-- **Esquema:** GUID
+During installation, format the SSD using **Disk Utility**:
+- **Format:** APFS
+- **Scheme:** GUID
 
-Após a instalação, copie a EFI do pendrive para o SSD via Terminal:
+After installation, copy the EFI from the USB to the SSD via Terminal:
 
 ```bash
-# Listar discos
+# List disks
 diskutil list
 
-# Montar EFI do SSD (substitua disk0s1 pelo identificador correto)
+# Mount SSD EFI (replace disk0s1 with the correct identifier)
 sudo diskutil mount disk0s1
 
-# Montar EFI do pendrive
+# Mount USB EFI
 sudo diskutil mount disk2s1
 
-# Copiar EFI
+# Copy EFI
 sudo cp -r /Volumes/OPENCORE/EFI /Volumes/EFI/
 ```
 
-Após isso, o sistema iniciará **sem necessidade do pendrive**.
+After this, the system will boot **without the USB drive**.
 
 ---
 
-## 📶 Wi-Fi — Observação Importante
+## 📶 Wi-Fi — Important Note
 
-> O `AirportItlwm.kext` pode causar **Kernel Panic** ao tentar conectar em algumas redes.  
-> A solução mais estável é usar o **`itlwm.kext`** em conjunto com o app **HeliPort**.
+> The `AirportItlwm.kext` may cause **Kernel Panic** when trying to connect to some networks.  
+> The most stable solution is to use **`itlwm.kext`** together with the **HeliPort** app.
 
-### Instalação do HeliPort
+### Installing HeliPort
 
-1. Baixe em: [github.com/OpenIntelWireless/HeliPort/releases](https://github.com/OpenIntelWireless/HeliPort/releases)
-2. Instale o `.dmg` normalmente
-3. Se aparecer aviso de segurança: clique com **botão direito → Open**
-4. Para iniciar com o sistema:
+1. Download at: [github.com/OpenIntelWireless/HeliPort/releases](https://github.com/OpenIntelWireless/HeliPort/releases)
+2. Install the `.dmg` normally
+3. If a security warning appears: right-click the app → **Open**
+4. To launch HeliPort at login:
 
 ```bash
 osascript -e 'tell application "System Events" to make login item at end with properties {path:"/Applications/HeliPort.app", hidden:false}'
@@ -197,9 +204,9 @@ osascript -e 'tell application "System Events" to make login item at end with pr
 
 ---
 
-## 🛠️ Ferramentas Utilizadas
+## 🛠️ Tools Used
 
-| Ferramenta | Link |
+| Tool | Link |
 |---|---|
 | OpenCore | [github.com/acidanthera/OpenCorePkg](https://github.com/acidanthera/OpenCorePkg/releases) |
 | ProperTree | [github.com/corpnewt/ProperTree](https://github.com/corpnewt/ProperTree) |
@@ -209,7 +216,7 @@ osascript -e 'tell application "System Events" to make login item at end with pr
 
 ---
 
-## 📚 Referências
+## 📚 References
 
 - [Dortania OpenCore Install Guide](https://dortania.github.io/OpenCore-Install-Guide/)
 - [OpenIntelWireless — itlwm](https://github.com/OpenIntelWireless/itlwm)
@@ -217,13 +224,13 @@ osascript -e 'tell application "System Events" to make login item at end with pr
 
 ---
 
-## ⚠️ Aviso Legal
+## ⚠️ Disclaimer
 
-Este guia é fornecido apenas para fins educacionais.  
-Instalar o macOS em hardware não-Apple viola o EULA da Apple.  
-Use por sua conta e risco.
+This guide is provided for educational purposes only.  
+Installing macOS on non-Apple hardware violates Apple's EULA.  
+Use at your own risk.
 
 ---
 
-> Feito com ☕ e muita paciência.  
-> Se te ajudou, deixa uma ⭐ no repositório!
+> Made with ☕ and a lot of patience.  
+> If this helped you, drop a ⭐ on the repo!
