@@ -193,8 +193,11 @@ After this, the system will boot **without the USB drive**.
 
 ### Installing HeliPort
 
-1. Download at: [github.com/OpenIntelWireless/HeliPort/releases](https://github.com/OpenIntelWireless/HeliPort/releases)
-2. Install the `.dmg` normally
+> 📁 **HeliPort is already included in this repository** — just install it directly.  
+> If you need a different version for your setup, download it at: [github.com/OpenIntelWireless/HeliPort/releases](https://github.com/OpenIntelWireless/HeliPort/releases)
+
+1. Open the `HeliPort.dmg` included in this repo
+2. Install it normally
 3. If a security warning appears: right-click the app → **Open**
 4. To launch HeliPort at login:
 
